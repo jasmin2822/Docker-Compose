@@ -1,0 +1,22 @@
+ockservices:
+  # Servicio de Base de Datos
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_ROOT_PASSWORD: password123
+    ports:
+      - "3306:3306"
+
+  # Servicio de Aplicación (Python/Flask)
+  app:
+    image: python:3.9-slim
+    volumes:
+      - ./src:/app
+    working_dir: /app
+    # Instalamos librerías y corremos el código
+    command: sh -c "pip install -r requirements.txt && python app.py"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
